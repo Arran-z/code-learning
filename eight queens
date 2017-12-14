@@ -1,0 +1,106 @@
+#include<stdio.h>
+void quen (int a[9][9],int i,int j)
+{
+    int k;
+    for (k=1;k<=8;k++)
+        a[i][k]=a[k][j]=1;
+    for (k=1;(i+k)<=8&&(j+k)<=8;k++)
+        a[i+k][j+k]=1;
+    for (k=1;(i+k)<=8&&(j-k)>=1;k++)
+        a[i+k][j-k]=1;
+    for (k=1;(i-k)>=1&&(j+k)<=8;k++)
+        a[i-k][j+k]=1;
+    for (k=1;(i-k)>=1&&(j-k)>=1;k++)
+        a[i-k][j-k]=1;
+}
+void inquen (int a[9][9],int i,int j)
+{
+    int k;
+    for (k=1;k<=8;k++)
+        a[i][k]=a[k][j]=0;
+    for (k=1;(i+k)<=8&&(j+k)<=8;k++)
+        a[i+k][j+k]=0;
+    for (k=1;(i+k)<=8&&(j-k)>=1;k++)
+        a[i+k][j-k]=0;
+    for (k=1;(i-k)>=1&&(j+k)<=8;k++)
+        a[i-k][j+k]=0;
+    for (k=1;(i-k)>=1&&(j-k)>=1;k++)
+        a[i-k][j-k]=0;
+}
+main()
+{
+    int i,j,k,s,z;
+    int a[9][9];
+    i=j=1;
+    k=1;
+    s=0;
+    for (i=1;i<=8;i++)
+        for (j=1;j<=8;j++)
+        a[i][j]=0;
+    for (j=1;j<=8;j++)  //dispel the impossible place
+    {
+        for (i=1;i<=8;i++)
+        {
+            if (a[i][j]==0)
+                break;
+            /*else
+            {
+                s=s+1;
+            }*/
+        }
+        k=i;
+        if (s!=(8-k+1))
+        {
+            a[k][j]=2;
+            quen (a[9][9],k,j);
+            for (z=1;z<=8;z++)
+            {
+                if (a[z][j+1]!=0)
+                    s=s+1;
+                else
+                    break;
+            }
+            if (s==8)
+            {
+                inquen (a[9][9],k,j);
+                a[k][j]=0;
+                k=k+1;
+                j=j-1;
+            }
+        }
+        /*else
+            {
+                inquen (a[9][9],k,j-1)
+                k=k+1;
+                j=j-1;
+            }*/
+    }
+    for (i=1;i<=7;i++)
+    {
+        for (j=1;j<=7;j++)
+        {
+            if (a[i][j]==2)
+                printf("* ");
+            else
+                printf(". ");
+        }
+        if (a[i][j]==2)
+            printf("*\n");
+        else
+            printf(".\n");
+    }
+    for (j=1;j<=7;j++)
+    {
+        if (a[8][j]==2)
+            printf("* ");
+        else
+            printf(". ");
+    }
+    if (a[8][8]==2)
+        printf("*");
+    else
+        printf(".");
+
+
+
+}
